@@ -51,6 +51,7 @@ jobs:
               f.write(f"date: {date}\n")
               f.write(f"---\n\n")
               f.write(blog_content)
+              
 
           print(f"Blogginlägg sparat som {filename}")
           EOF
