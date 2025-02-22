@@ -1,1 +1,40 @@
+name: Test OpenAI API Key
 
+on:
+  workflow_dispatch:  # Gör det möjligt att köra manuellt
+
+jobs:
+  test-api-key:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install openai
+
+      - name: Test OpenAI API Key
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python - <<EOF
+          import openai
+
+          api_key = "${{ secrets.OPENAI_API_KEY }}"
+          try:
+              client = openai.OpenAI(api_key=api_key)
+              models = client.models.list()
+              
+              print("API-nyckeln är giltig!")
+              print("Tillgängliga modeller:")
+              for model in models.data:
+                  print(model.id)
+          except openai.OpenAIError as e:
+              print("Fel vid anslutning till OpenAI API:", e)
+          EOF
