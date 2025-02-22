@@ -1,12 +1,12 @@
 name: Generate and Publish Blog Post
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 14"  # Kör varannan vecka
+    - cron: "0 0 * * 1"  # Kör varje måndag kl. 00:00 UTC
+  workflow_dispatch:  # Gör det möjligt att köra manuellt
 
 jobs:
-  generate_blog:
+  generate-blog-post:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,48 +16,59 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install dependencies
-        run: pip install openai
+        run: pip install openai pyyaml
 
       - name: Generate blog post
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python - <<EOF
+          import os
           import openai
           import datetime
 
-          openai.api_key = "${{ secrets.OPENAI_API_KEY }}"
+          # API-nyckel
+          openai.api_key = os.getenv("OPENAI_API_KEY")
 
-          today = datetime.date.today().strftime('%Y-%m-%d')
-          filename = f"_posts/{today}-lekplats-blogg.md"
+          # Kolla om det är en jämn vecka (ISO-veckonummer)
+          week_number = datetime.date.today().isocalendar()[1]
+          if week_number % 2 != 0:
+              print("Hoppar över workflow: Det är en udda vecka.")
+              exit(0)
 
-          response = openai.chat.completions.create(
-              model="gpt-4",
-              messages=[
-                  {"role": "system", "content": "Du är en expert på SEO-optimerade blogginlägg om lekplatser, säkerhet och lekredskap. Blogginläggen ska vara relevanta för KPLN.se och hjälpa till att driva trafik dit."},
-                  {"role": "user", "content": "Skriv ett SEO-optimerat blogginlägg om fördelarna med att installera hållbara och säkra lekplatser från KPLN.se. Inkludera nyckelord och call-to-action för att öka engagemanget."}
-              ]
+          # Datum och filnamn
+          today = datetime.date.today().strftime("%Y-%m-%d")
+          filename = f"_posts/{today}-seo-optimerat-inlagg.md"
+
+          # Fråga OpenAI om ett SEO-optimerat blogginlägg
+          prompt = """
+          Skapa ett SEO-optimerat blogginlägg för KPLN.se med fokus på lekplatser, säkerhet och hållbarhet. 
+          Använd relevanta sökord och inkludera interna länkar till KPLN.se.  
+          Rubrik, underrubriker och brödtext ska vara optimerade för sökmotorer.
+          """
+
+          response = openai.ChatCompletion.create(
+              model="gpt-4-turbo",
+              messages=[{"role": "system", "content": "Du är en expert på SEO-optimerade blogginlägg."},
+                        {"role": "user", "content": prompt}]
           )
 
-          blog_content = response.choices[0].message.content
+          content = response["choices"][0]["message"]["content"]
 
+          # Skapa blogginlägget
           with open(filename, "w") as f:
               f.write(f"---\n")
-              f.write(f"title: Fördelarna med hållbara och säkra lekplatser\n")
+              f.write(f"title: SEO-optimerat inlägg om lekplatser\n")
               f.write(f"date: {today}\n")
               f.write(f"---\n\n")
-              f.write(blog_content)
+              f.write(content)
 
-          print("Blogginlägg skapat:", filename)
-          EOF
-
-      - name: Commit and Push
+      - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add _posts/*.md
-          git commit -m "Lägg till nytt SEO-optimerat blogginlägg" || echo "Inga ändringar att commit:a"
+          git commit -m "Auto-generated SEO blog post"
           git push
