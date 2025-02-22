@@ -26,15 +26,14 @@ jobs:
           python - <<EOF
           import openai
 
-          api_key = "${{ secrets.OPENAI_API_KEY }}"
+          openai.api_key = "${{ secrets.OPENAI_API_KEY }}"
+
           try:
-              client = openai.OpenAI(api_key=api_key)
-              models = client.models.list()
-              
+              models = openai.Model.list()
               print("API-nyckeln är giltig!")
               print("Tillgängliga modeller:")
               for model in models.data:
                   print(model.id)
-          except openai.OpenAIError as e:
+          except Exception as e:
               print("Fel vid anslutning till OpenAI API:", e)
           EOF
