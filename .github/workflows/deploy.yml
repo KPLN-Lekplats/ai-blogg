@@ -13,19 +13,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          node-version: '14'
+          python-version: '3.10'
 
       - name: Install dependencies
-        run: npm install
+        run: pip install openai  # Om du behöver installera OpenAI-biblioteket för att generera inlägg
 
       - name: Build the website
-        run: npm run build
+        run: |
+          # Om du behöver utföra något för att bygga din webbplats kan du ange det här.
+          # Om du inte behöver bygga något kan du hoppa över detta steg.
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: .  # Ändra detta till den mapp där din index.html ligger (t.ex. root eller ./public)
