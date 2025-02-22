@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
@@ -27,26 +27,25 @@ jobs:
         run: |
           python - <<EOF
           import openai
-          from datetime import datetime
+          import datetime
 
-          openai.api_key = "${{ secrets.OPENAI_API_KEY }}"
+          openai_client = openai.OpenAI(api_key="${{ secrets.OPENAI_API_KEY }}")
 
           prompt = (
               "Skriv ett SEO-optimerat blogginlägg om lekplatser, lekredskap "
-              "eller relaterade ämnen. Inlägget ska vara ca 600-1000 ord långt och "
-              "innehålla relevant information. Inkludera interna länkar till KPLN.se, "
-              "en tydlig titel i h1-format och underrubriker i h2-format. "
-              "Avsluta med en rekommendation av populära produkter från KPLN.se."
+              "eller relaterade ämnen. Inlägget ska vara 600-1000 ord långt, ha en tydlig titel i h1-format, "
+              "underrubriker i h2-format och relevanta nyckelord. "
+              "Lägg till interna länkar till KPLN.se och avsluta med en rekommendation av populära produkter."
           )
 
-          response = openai.ChatCompletion.create(
+          response = openai_client.chat.completions.create(
               model="gpt-4",
               messages=[{"role": "system", "content": prompt}]
           )
 
-          blog_content = response["choices"][0]["message"]["content"]
+          blog_content = response.choices[0].message.content
 
-          date = datetime.now().strftime("%Y-%m-%d")
+          date = datetime.datetime.now().strftime("%Y-%m-%d")
           filename = f"_posts/{date}-ai-blogg.md"
 
           with open(filename, "w") as f:
