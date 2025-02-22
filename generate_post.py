@@ -1,38 +1,61 @@
-import os
 import openai
+import os
 from datetime import datetime
 
-# Hämta API-nyckeln från miljövariabler
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Se till att din API-nyckel är korrekt inställd som en miljövariabel
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise ValueError("OPENAI_API_KEY miljövariabeln är inte inställd.")
 
-# Kontrollera att API-nyckeln är korrekt
-if not openai.api_key:
-    raise ValueError("Ingen giltig OpenAI API-nyckel hittades!")
+openai.api_key = api_key
 
-# Skapa ett SEO-optimerat blogginlägg
-prompt = "Skriv ett SEO-optimerat blogginlägg på svenska om lekplatser och dess betydelse för barns utveckling. Använd viktiga sökord relaterade till lekredskap och KPLN.se."
-
-response = openai.chat.completions.create(
-    model="gpt-40",
-    messages=[{"role": "system", "content": "Du är en expert på att skriva SEO-optimerade blogginlägg."},
-              {"role": "user", "content": prompt}],
-    temperature=0.7,
-    max_tokens=1000
+# Definiera prompten för blogginlägget
+prompt = (
+    "Skriv ett detaljerat blogginlägg om de senaste framstegen inom artificiell intelligens, "
+    "inklusive maskininlärning, djupinlärning och deras tillämpningar i olika industrier. "
+    "Diskutera också framtida trender och etiska överväganden."
 )
 
-# Extrahera texten från OpenAI:s svar
-blog_text = response.choices[0].message.content.strip()
+# Anropa OpenAI:s API för att generera text
+try:
+    response = openai.ChatCompletion.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "Du är en expertbloggare inom artificiell intelligens."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=1500,  # Justera antalet tokens baserat på önskad längd
+        temperature=0.7,  # Justera kreativiteten i textgenereringen
+    )
+except openai.error.OpenAIError as e:
+    print(f"Ett fel inträffade vid anropet till OpenAI API: {e}")
+    raise
 
-# Skapa filnamn med dagens datum
-date = datetime.today().strftime('%Y-%m-%d')
-filename = f"_posts/{date}-seo-optimerat-lekplatser.md"
+# Extrahera det genererade innehållet
+generated_content = response.choices[0].message['content']
 
-# Skriv ut till fil
-with open(filename, "w", encoding="utf-8") as f:
-    f.write(f"---\n")
-    f.write(f"title: SEO-optimerade lekplatser\n")
-    f.write(f"date: {date}\n")
-    f.write(f"---\n\n")
-    f.write(blog_text)
+# Formatera dagens datum för filnamnet
+today = datetime.now().strftime("%Y-%m-%d")
 
-print(f"Blogginlägg genererat: {filename}")
+# Definiera filnamnet för blogginlägget
+filename = f"_posts/{today}-ai-framsteg.md"
+
+# Skapa innehållet i blogginlägget med YAML-metadata
+blog_post = f"""---
+layout: post
+title: "De senaste framstegen inom artificiell intelligens"
+date: {today}
+categories: AI Utveckling
+---
+
+{generated_content}
+"""
+
+# Skriv blogginlägget till en fil
+try:
+    with open(filename, "w") as file:
+        file.write(blog_post)
+    print(f"Blogginlägget har skapats: {filename}")
+except IOError as e:
+    print(f"Ett fel inträffade vid skrivning till filen: {e}")
+    raise
