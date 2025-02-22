@@ -2,7 +2,7 @@ name: Generate and Publish Blog Post
 
 on:
   schedule:
-    - cron: '0 12 * * 4'  # Kör varje torsdag kl 12:00 UTC
+    - cron: '0 12 */14 * *'  # Kör varannan vecka på torsdag kl 12:00 UTC
   workflow_dispatch:  # Möjliggör manuell körning också
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -21,38 +21,19 @@ jobs:
       - name: Install dependencies
         run: pip install openai
 
-      - name: Generate blog post
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Generate blog post (test version)
         run: |
           python - <<EOF
-          import openai
           from datetime import datetime
-
-          openai.api_key = "${{ secrets.OPENAI_API_KEY }}"
-
-          prompt = "Skriv ett SEO-optimerat blogginlägg om lekplatser, lekredskap eller relaterade ämnen. \
-          Inlägget ska vara ca 600-1000 ord långt och innehålla relevant information. \
-          Skapa också en titel i h1-format och underrubriker i h2-format."
-
-          response = openai.ChatCompletion.create(
-              model="gpt-4",
-              messages=[{"role": "user", "content": prompt}]
-          )
-
-          blog_content = response["choices"][0]["message"]["content"]
-
           date = datetime.now().strftime("%Y-%m-%d")
-          filename = f"_posts/{date}-ai-blogg.md"
-
+          filename = f"_posts/{date}-test-inlagg.md"
           with open(filename, "w") as f:
               f.write(f"---\n")
-              f.write(f"title: AI-genererat inlägg {date}\n")
+              f.write(f"title: Testinlägg\n")
               f.write(f"date: {date}\n")
               f.write(f"---\n\n")
-              f.write(blog_content)
-
-          print(f"Blogginlägg sparat som {filename}")
+              f.write("Detta är ett testinlägg för att verifiera att inlägg skapas.")
+          print(f"Testinlägg sparat som {filename}")
           EOF
 
       - name: Commit and push changes
@@ -60,5 +41,5 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add _posts/
-          git commit -m "Auto-generated blog post" || echo "No changes to commit"
+          git commit -m "Auto-generated test blog post" || echo "No changes to commit"
           git push
