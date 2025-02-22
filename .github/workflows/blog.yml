@@ -21,54 +21,15 @@ jobs:
       - name: Install dependencies
         run: pip install openai pyyaml
 
-      - name: Generate blog post
+      - name: Run script to generate blog post
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          import os
-          import openai
-          import datetime
-
-          # API-nyckel
-          openai.api_key = os.getenv("OPENAI_API_KEY")
-
-          # Kolla om det är en jämn vecka (ISO-veckonummer)
-          week_number = datetime.date.today().isocalendar()[1]
-          if week_number % 2 != 0:
-              print("Hoppar över workflow: Det är en udda vecka.")
-              exit(0)
-
-          # Datum och filnamn
-          today = datetime.date.today().strftime("%Y-%m-%d")
-          filename = f"_posts/{today}-seo-optimerat-inlagg.md"
-
-          # Fråga OpenAI om ett SEO-optimerat blogginlägg
-          prompt = """
-          Skapa ett SEO-optimerat blogginlägg för KPLN.se med fokus på lekplatser, säkerhet och hållbarhet. 
-          Använd relevanta sökord och inkludera interna länkar till KPLN.se.  
-          Rubrik, underrubriker och brödtext ska vara optimerade för sökmotorer.
-          """
-
-          response = openai.ChatCompletion.create(
-              model="gpt-4-turbo",
-              messages=[{"role": "system", "content": "Du är en expert på SEO-optimerade blogginlägg."},
-                        {"role": "user", "content": prompt}]
-          )
-
-          content = response["choices"][0]["message"]["content"]
-
-          # Skapa blogginlägget
-          with open(filename, "w") as f:
-              f.write(f"---\n")
-              f.write(f"title: SEO-optimerat inlägg om lekplatser\n")
-              f.write(f"date: {today}\n")
-              f.write(f"---\n\n")
-              f.write(content)
+        run: python generate_post.py
 
       - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add _posts/*.md
-          git commit -m "Auto-generated SEO blog post"
+          git commit -m "Auto-generated SEO blog post" || echo "No changes to commit"
           git push
