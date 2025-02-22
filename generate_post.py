@@ -13,7 +13,7 @@ if not openai.api_key:
 prompt = "Skriv ett SEO-optimerat blogginlägg på svenska om lekplatser och dess betydelse för barns utveckling. Använd viktiga sökord relaterade till lekredskap och KPLN.se."
 
 response = openai.chat.completions.create(
-    model="gpt-4-turbo",
+    model="gpt-40",
     messages=[{"role": "system", "content": "Du är en expert på att skriva SEO-optimerade blogginlägg."},
               {"role": "user", "content": prompt}],
     temperature=0.7,
