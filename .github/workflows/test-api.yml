@@ -25,15 +25,19 @@ jobs:
         run: |
           python - <<EOF
           import openai
-
+          
+          # Ställ in API-nyckeln direkt
           openai.api_key = "${{ secrets.OPENAI_API_KEY }}"
-
+          
           try:
-              models = openai.Model.list()
+              # Gör en minimal förfrågan med en känd modell
+              response = openai.ChatCompletion.create(
+                  model="gpt-3.5-turbo",
+                  messages=[{"role": "user", "content": "Test"}],
+                  max_tokens=10
+              )
               print("API-nyckeln är giltig!")
-              print("Tillgängliga modeller:")
-              for model in models.data:
-                  print(model.id)
+              print("Svar från modellen:", response.choices[0].message.content)
           except Exception as e:
               print("Fel vid anslutning till OpenAI API:", e)
           EOF
