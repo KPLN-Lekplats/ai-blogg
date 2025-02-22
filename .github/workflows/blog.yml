@@ -37,7 +37,7 @@ jobs:
 
           response = openai.ChatCompletion.create(
               model="gpt-4",
-              messages=[{"role": "system", "content": prompt}]
+              messages=[{"role": "user", "content": prompt}]  # Ändrat "system" till "user"
           )
 
           blog_content = response["choices"][0]["message"]["content"]
@@ -51,7 +51,6 @@ jobs:
               f.write(f"date: {date}\n")
               f.write(f"---\n\n")
               f.write(blog_content)
-              
 
           print(f"Blogginlägg sparat som {filename}")
           EOF
