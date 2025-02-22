@@ -1,41 +1,38 @@
 import os
 import openai
-import datetime
+from datetime import datetime
 
-# API-nyckel
+# Hämta API-nyckeln från miljövariabler
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Kolla om det är en jämn vecka (ISO-veckonummer)
-week_number = datetime.date.today().isocalendar()[1]
-if week_number % 2 != 0:
-    print("Hoppar över workflow: Det är en udda vecka.")
-    exit(0)
+# Kontrollera att API-nyckeln är korrekt
+if not openai.api_key:
+    raise ValueError("Ingen giltig OpenAI API-nyckel hittades!")
 
-# Datum och filnamn
-today = datetime.date.today().strftime("%Y-%m-%d")
-filename = f"_posts/{today}-seo-optimerat-inlagg.md"
+# Skapa ett SEO-optimerat blogginlägg
+prompt = "Skriv ett SEO-optimerat blogginlägg på svenska om lekplatser och dess betydelse för barns utveckling. Använd viktiga sökord relaterade till lekredskap och KPLN.se."
 
-# Fråga OpenAI om ett SEO-optimerat blogginlägg
-prompt = """
-Skapa ett SEO-optimerat blogginlägg för KPLN.se med fokus på lekplatser, säkerhet och hållbarhet. 
-Använd relevanta sökord och inkludera interna länkar till KPLN.se.  
-Rubrik, underrubriker och brödtext ska vara optimerade för sökmotorer.
-"""
-
-response = openai.ChatCompletion.create(
+response = openai.chat.completions.create(
     model="gpt-4-turbo",
-    messages=[{"role": "system", "content": "Du är en expert på SEO-optimerade blogginlägg."},
-              {"role": "user", "content": prompt}]
+    messages=[{"role": "system", "content": "Du är en expert på att skriva SEO-optimerade blogginlägg."},
+              {"role": "user", "content": prompt}],
+    temperature=0.7,
+    max_tokens=1000
 )
 
-content = response["choices"][0]["message"]["content"]
+# Extrahera texten från OpenAI:s svar
+blog_text = response.choices[0].message.content.strip()
 
-# Skapa blogginlägget
-with open(filename, "w") as f:
+# Skapa filnamn med dagens datum
+date = datetime.today().strftime('%Y-%m-%d')
+filename = f"_posts/{date}-seo-optimerat-lekplatser.md"
+
+# Skriv ut till fil
+with open(filename, "w", encoding="utf-8") as f:
     f.write(f"---\n")
-    f.write(f"title: SEO-optimerat inlägg om lekplatser\n")
-    f.write(f"date: {today}\n")
+    f.write(f"title: SEO-optimerade lekplatser\n")
+    f.write(f"date: {date}\n")
     f.write(f"---\n\n")
-    f.write(content)
+    f.write(blog_text)
 
-print(f"Blogginlägg sparat som {filename}")
+print(f"Blogginlägg genererat: {filename}")
