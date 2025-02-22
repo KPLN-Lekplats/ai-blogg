@@ -1,7 +1,7 @@
-name: Test OpenAI API Key
+name: Test OpenAI API Key with Models
 
 on:
-  workflow_dispatch:  # Gör det möjligt att köra manuellt
+  workflow_dispatch:
 
 jobs:
   test-api-key:
@@ -16,28 +16,25 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Install dependencies
-        run: pip install openai
+      - name: Install dependencies (pinned to 0.28)
+        run: pip install openai==0.28
 
-      - name: Test OpenAI API Key
+      - name: Test API Key and List Models
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           python - <<EOF
           import openai
-          
-          # Ställ in API-nyckeln direkt
+
+          # Ställ in API-nyckeln
           openai.api_key = "${{ secrets.OPENAI_API_KEY }}"
-          
+
           try:
-              # Gör en minimal förfrågan med en känd modell
-              response = openai.ChatCompletion.create(
-                  model="gpt-3.5-turbo",
-                  messages=[{"role": "user", "content": "Test"}],
-                  max_tokens=10
-              )
+              models = openai.Model.list()
               print("API-nyckeln är giltig!")
-              print("Svar från modellen:", response.choices[0].message.content)
+              print("Tillgängliga modeller:")
+              for model in models.data:
+                  print(model.id)
           except Exception as e:
               print("Fel vid anslutning till OpenAI API:", e)
           EOF
