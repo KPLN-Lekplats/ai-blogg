@@ -1,1 +1,65 @@
+name: Generate and Publish Blog Post
 
+on:
+  schedule:
+    - cron: '0 12 */14 * *'  # Kör varannan vecka på torsdag kl 12:00 UTC
+  workflow_dispatch:  # Möjliggör manuell körning också
+
+jobs:
+  generate_blog_post:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install openai
+
+      - name: Generate blog post
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python - <<EOF
+          import openai
+          from datetime import datetime
+
+          openai.api_key = "${{ secrets.OPENAI_API_KEY }}"
+
+          prompt = "Skriv ett SEO-optimerat blogginlägg om lekplatser, lekredskap eller relaterade ämnen. \
+          Inlägget ska vara ca 600-1000 ord långt och innehålla relevant information. \
+          Skapa också en titel i h1-format och underrubriker i h2-format."
+
+          response = openai.ChatCompletion.create(
+              model="gpt-4",
+              messages=[{"role": "system", "content": prompt}]
+          )
+
+          blog_content = response["choices"][0]["message"]["content"]
+
+          date = datetime.now().strftime("%Y-%m-%d")
+          filename = f"_posts/{date}-ai-blogg.md"
+
+          with open(filename, "w") as f:
+              f.write(f"---\n")
+              f.write(f"title: AI-genererat inlägg {date}\n")
+              f.write(f"date: {date}\n")
+              f.write(f"---\n\n")
+              f.write(blog_content)
+              
+
+          print(f"Blogginlägg sparat som {filename}")
+          EOF
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add _posts/
+          git commit -m "Auto-generated blog post"
+          git push
