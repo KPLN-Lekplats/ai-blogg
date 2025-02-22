@@ -1,5 +1,6 @@
 name: Generate and Publish Blog Post
 
+
 on:
   schedule:
     - cron: '0 12 */14 * *'  # Kör varannan vecka på torsdag kl 12:00 UTC
