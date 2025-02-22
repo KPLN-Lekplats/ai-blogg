@@ -1,12 +1,12 @@
 name: Generate and Publish Blog Post
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '0 12 */14 * *'  # Kör varannan vecka på torsdag kl 12:00 UTC
-  workflow_dispatch:  # Möjliggör manuell körning också
+    - cron: "0 0 * * 14"  # Kör varannan vecka
 
 jobs:
-  generate_blog_post:
+  generate_blog:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,39 +29,35 @@ jobs:
           import openai
           import datetime
 
-          openai_client = openai.OpenAI(api_key="${{ secrets.OPENAI_API_KEY }}")
+          openai.api_key = "${{ secrets.OPENAI_API_KEY }}"
 
-          prompt = (
-              "Skriv ett SEO-optimerat blogginlägg om lekplatser, lekredskap "
-              "eller relaterade ämnen. Inlägget ska vara 600-1000 ord långt, ha en tydlig titel i h1-format, "
-              "underrubriker i h2-format och relevanta nyckelord. "
-              "Lägg till interna länkar till KPLN.se och avsluta med en rekommendation av populära produkter."
-          )
+          today = datetime.date.today().strftime('%Y-%m-%d')
+          filename = f"_posts/{today}-lekplats-blogg.md"
 
-          response = openai_client.chat.completions.create(
+          response = openai.chat.completions.create(
               model="gpt-4",
-              messages=[{"role": "system", "content": prompt}]
+              messages=[
+                  {"role": "system", "content": "Du är en expert på SEO-optimerade blogginlägg om lekplatser, säkerhet och lekredskap. Blogginläggen ska vara relevanta för KPLN.se och hjälpa till att driva trafik dit."},
+                  {"role": "user", "content": "Skriv ett SEO-optimerat blogginlägg om fördelarna med att installera hållbara och säkra lekplatser från KPLN.se. Inkludera nyckelord och call-to-action för att öka engagemanget."}
+              ]
           )
 
           blog_content = response.choices[0].message.content
 
-          date = datetime.datetime.now().strftime("%Y-%m-%d")
-          filename = f"_posts/{date}-ai-blogg.md"
-
           with open(filename, "w") as f:
               f.write(f"---\n")
-              f.write(f"title: AI-genererat inlägg om lekplatser {date}\n")
-              f.write(f"date: {date}\n")
+              f.write(f"title: Fördelarna med hållbara och säkra lekplatser\n")
+              f.write(f"date: {today}\n")
               f.write(f"---\n\n")
               f.write(blog_content)
-              
-          print(f"Blogginlägg sparat som {filename}")
+
+          print("Blogginlägg skapat:", filename)
           EOF
 
-      - name: Commit and push changes
+      - name: Commit and Push
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add _posts/
-          git commit -m "Auto-generated blog post"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add _posts/*.md
+          git commit -m "Lägg till nytt SEO-optimerat blogginlägg" || echo "Inga ändringar att commit:a"
           git push
