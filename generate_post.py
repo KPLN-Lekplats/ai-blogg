@@ -2,60 +2,59 @@ import openai
 import os
 from datetime import datetime
 
-# Se till att din API-nyckel är korrekt inställd som en miljövariabel
+# Hämta API-nyckeln från miljövariabel
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
-    raise ValueError("OPENAI_API_KEY miljövariabeln är inte inställd.")
+    raise ValueError("OPENAI_API_KEY är inte inställd som en miljövariabel.")
 
-openai.api_key = api_key
+# Initiera OpenAI-klienten med den nya syntaxen
+client = openai.OpenAI(api_key=api_key)
 
-# Definiera prompten för blogginlägget
+# Skapa en prompt för blogginlägget
 prompt = (
-    "Skriv ett detaljerat blogginlägg om de senaste framstegen inom artificiell intelligens, "
-    "inklusive maskininlärning, djupinlärning och deras tillämpningar i olika industrier. "
-    "Diskutera också framtida trender och etiska överväganden."
+    "Skriv ett detaljerat och SEO-optimerat blogginlägg om vikten av lekplatser för barns utveckling. "
+    "Inkludera fakta om fysisk aktivitet, social interaktion och mental stimulans. "
+    "Ge exempel på bra lekplatsutrustning och hur den bidrar till barns hälsa och välbefinnande."
 )
 
-# Anropa OpenAI:s API för att generera text
+# Anropa OpenAI API med den uppdaterade metoden
 try:
-    response = openai.ChatCompletion.create(
-        model="gpt-4o",
+    response = client.chat.completions.create(
+        model="gpt-4o",  # Använd den senaste tillgängliga modellen
         messages=[
-            {"role": "system", "content": "Du är en expertbloggare inom artificiell intelligens."},
+            {"role": "system", "content": "Du är en expert på lekplatser och barnutveckling."},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=1500,  # Justera antalet tokens baserat på önskad längd
-        temperature=0.7,  # Justera kreativiteten i textgenereringen
+        max_tokens=1500,
+        temperature=0.7
     )
-except openai.error.OpenAIError as e:
-    print(f"Ett fel inträffade vid anropet till OpenAI API: {e}")
+except Exception as e:
+    print(f"Ett fel uppstod vid anropet till OpenAI API: {e}")
     raise
 
-# Extrahera det genererade innehållet
-generated_content = response.choices[0].message['content']
+# Extrahera genererat innehåll
+generated_content = response.choices[0].message.content
 
-# Formatera dagens datum för filnamnet
+# Skapa filnamn baserat på dagens datum
 today = datetime.now().strftime("%Y-%m-%d")
+filename = f"_posts/{today}-lekplatser-barns-utveckling.md"
 
-# Definiera filnamnet för blogginlägget
-filename = f"_posts/{today}-ai-framsteg.md"
-
-# Skapa innehållet i blogginlägget med YAML-metadata
+# Skapa blogginläggsfilens innehåll med YAML-metadata
 blog_post = f"""---
 layout: post
-title: "De senaste framstegen inom artificiell intelligens"
+title: "Lekplatsers betydelse för barns utveckling"
 date: {today}
-categories: AI Utveckling
+categories: Lek & Utveckling
 ---
 
 {generated_content}
 """
 
-# Skriv blogginlägget till en fil
+# Spara blogginlägget i en fil
 try:
-    with open(filename, "w") as file:
+    with open(filename, "w", encoding="utf-8") as file:
         file.write(blog_post)
-    print(f"Blogginlägget har skapats: {filename}")
+    print(f"Blogginlägget har sparats: {filename}")
 except IOError as e:
-    print(f"Ett fel inträffade vid skrivning till filen: {e}")
+    print(f"Fel vid skrivning till filen: {e}")
     raise
