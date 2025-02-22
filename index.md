@@ -3,7 +3,7 @@ layout: default
 title: AI-blogg
 ---
 
-# Välkommen till AI-bloggen!
+# Välkommen till AI-bloggen!!
 Här kommer automatiska inlägg att dyka upp.
 
 ## Senaste inlägg
