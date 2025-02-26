@@ -1,5 +1,6 @@
 import requests
 import os
+import random
 from datetime import datetime
 
 # Hämta API-nyckeln från miljövariabeln
@@ -8,13 +9,57 @@ API_KEY = os.getenv("GEMINI_API_KEY")
 # Definiera API-endpoint
 API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
 
-# Uppdaterad prompt:
-# Vi instruerar modellen att skriva ett SEO-optimerat blogginlägg direkt utan någon introduktion eller referens till AI-generering.
-prompt = (
-    "Skriv ett SEO-optimerat blogginlägg om lekplatssäkerhet för fastighetsägare och bostadsrättsföreningar. "
-    "Artikeln ska inledas direkt med innehållet, utan någon inledande text som: 'Visst, här är ett SEO-optimerat blogginlägg ...'. "
-    "Använd en tydlig struktur med underrubriker och inkludera eventuella relevanta länkar där det passar."
-)
+# Lista med möjliga ämnen och relaterade SEO-parametrar
+topics = [
+    {
+        "topic": "lekplatssäkerhet",
+        "title": "Lekplatssäkerhet och underhåll för fastighetsägare",
+        "link_text": "KPLN Lekplatser",
+        "link_url": "https://www.kpln.se/category/klassisk-lek"
+    },
+    {
+        "topic": "sport och träning utomhus",
+        "title": "Utomhusträning: Tips för parkmiljöer",
+        "link_text": "KPLN Sport",
+        "link_url": "https://www.kpln.se/category/sport"
+    },
+    {
+        "topic": "utomhusgym",
+        "title": "Design och underhåll av utomhusgym",
+        "link_text": "KPLN Utomhusgym",
+        "link_url": "https://www.kpln.se/category/utomhusgym"
+    },
+    {
+        "topic": "fitness",
+        "title": "Fitness i friluftsmiljö: Inspiration och tips",
+        "link_text": "KPLN Fitness",
+        "link_url": "https://www.kpln.se/category/fitness"
+    },
+    {
+        "topic": "parkmiljöer",
+        "title": "Optimera parkmiljön för både rekreation och aktivitet",
+        "link_text": "KPLN Parkmiljöer",
+        "link_url": "https://www.kpln.se/category/parkmiljoter"  # Justera URL vid behov
+    },
+    {
+        "topic": "skateparks",
+        "title": "Säkerhet och design i moderna skateparks",
+        "link_text": "KPLN Skate",
+        "link_url": "https://www.kpln.se/category/skate"
+    }
+]
+
+# Välj slumpmässigt ett ämne
+chosen = random.choice(topics)
+
+# Bygg en prompt som instruerar modellen att skriva ett SEO-optimerat inlägg
+prompt = f"""Skriv ett SEO-optimerat blogginlägg om {chosen['topic']}. 
+Inlägget ska vara minst 800 ord och ha en tydlig struktur med underrubriker. 
+Inkludera naturliga länkar till KPLN.se och dess produkter, till exempel [{chosen['link_text']}]({chosen['link_url']}). 
+Syftet är att driva trafik till KPLN.se och förbättra sökmotoroptimeringen. 
+Fokusera på {chosen['title']}. 
+Artikeln ska inledas direkt med innehållet, utan någon extra introduktion eller referens till att den är AI-genererad.
+"""
 
 # Skapa payload för API-anropet
 payload = {
@@ -23,23 +68,25 @@ payload = {
     }]
 }
 
-# Skicka begäran till API:t
+# Skicka anropet till Gemini API:t
 response = requests.post(API_URL, headers={"Content-Type": "application/json"}, json=payload)
 
-# Hantera API-svaret
+# Hantera svaret
 if response.status_code == 200:
     data = response.json()
     blog_content = data["candidates"][0]["content"]["parts"][0]["text"]
 
-    # Se till att mappen "blog" finns, annars skapa den
+    # Se till att mappen "blog" finns
     os.makedirs("blog", exist_ok=True)
 
-    # Skapa en fil för inlägget med dagens datum
+    # Skapa ett filnamn baserat på datum och valt ämne (omvandlar mellanslag till bindestreck)
     today = datetime.today().strftime('%Y-%m-%d')
-    filename = f"blog/{today}-lekplatssäkerhet.md"
+    slug = chosen['topic'].replace(" ", "-")
+    filename = f"blog/{today}-{slug}.md"
 
+    # Skriv rubrik och innehåll till filen
     with open(filename, "w", encoding="utf-8") as file:
-        file.write(f"# Lekplatssäkerhet för fastighetsägare och bostadsrättsföreningar\n\n{blog_content}")
+        file.write(f"# {chosen['title']}\n\n{blog_content}")
 
     print(f"Inlägg sparat som {filename}")
 else:
