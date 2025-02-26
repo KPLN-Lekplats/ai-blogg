@@ -27,6 +27,9 @@ if response.status_code == 200:
     data = response.json()
     blog_content = data["candidates"][0]["content"]["parts"][0]["text"]
 
+    # Se till att mappen "blog" finns, annars skapa den
+    os.makedirs("blog", exist_ok=True)
+
     # Skapa en fil för inlägget i rätt katalog
     today = datetime.today().strftime('%Y-%m-%d')
     filename = f"blog/{today}-lekplatssäkerhet.md"
