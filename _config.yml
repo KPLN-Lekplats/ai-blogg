@@ -1,24 +1,21 @@
 title: "KPLN AI-Blogg"
 description: "Bloggen om lekplats, sport och träning för utomhusmiljöer."
-baseurl: ""  # Om du publicerar i rot, annars t.ex. "/ai-blogg"
-url: "https://kpln-lekplats.github.io"  # Din fullständiga URL
+baseurl: "/ai-blogg"  # OBS! Eftersom du publicerar som projekt-sida
+url: "https://KPLN-Lekplats.github.io"
 theme: minima
 
-# Samling för blogginlägg (innehållet i mappen "blog")
 collections:
   blog:
     output: true
 
-# Navigationsmeny (om temat/layouten använder denna variabel)
 nav:
   - title: "Hem"
-    url: "/"
+    url: "{{ site.baseurl }}/"
   - title: "Blogginlägg"
-    url: "/blog/"
+    url: "{{ site.baseurl }}/blog/"
   - title: "KPLN.se"
     url: "https://www.kpln.se"
 
-# Övriga inställningar
 markdown: kramdown
 highlighter: rouge
 
@@ -26,7 +23,6 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
-# SEO-inställningar
 seo:
   title: "KPLN AI-Blogg"
   description: "Bloggen om lekplats, sport och träning för utomhusmiljöer."
