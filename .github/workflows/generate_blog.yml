@@ -1,0 +1,35 @@
+name: Generate Blog Post
+
+on:
+  schedule:
+    - cron: '0 0 1,15 * *'  # Kör den 1:a och 15:e varje månad
+  workflow_dispatch:  # Möjlighet att köra manuellt
+
+jobs:
+  generate-blog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run blog generator
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python generate_blog.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add blog/
+          git commit -m "Automatiskt genererat blogginlägg"
+          git push
