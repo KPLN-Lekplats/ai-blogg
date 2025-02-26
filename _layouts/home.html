@@ -1,1 +1,26 @@
-
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page.title }} | KPLN AI-Blogg</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="{{ site.baseurl }}/">Hem</a></li>
+          <li><a href="{{ site.baseurl }}/blog/">Blogginlägg</a></li>
+          <li><a href="https://www.kpln.se">KPLN.se</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      {{ content }}
+    </main>
+    <footer>
+      <p>&copy; {{ site.time | date: "%Y" }} KPLN AI-Blogg</p>
+    </footer>
+  </body>
+</html>
