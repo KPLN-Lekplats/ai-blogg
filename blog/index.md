@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Blogginlägg"
+title: "KPLN-blogg"
 permalink: /blog/
 ---
 
-<h1>Blogginlägg</h1>
+<h1>KPLN-blogg</h1>
 <ul>
   {% for post in site.blog | sort: 'date' | reverse %}
     <li>
