@@ -1,16 +1,20 @@
 import requests
-import json
 import os
 from datetime import datetime
 
-# Hämta API-nyckeln från en miljövariabel
+# Hämta API-nyckeln från miljövariabeln
 API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Definiera API-endpoint
 API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
 
-# Skapa en bloggfråga
-prompt = "Skriv ett SEO-optimerat blogginlägg om lekplatssäkerhet för fastighetsägare och bostadsrättsföreningar."
+# Uppdaterad prompt:
+# Vi instruerar modellen att skriva ett SEO-optimerat blogginlägg direkt utan någon introduktion eller referens till AI-generering.
+prompt = (
+    "Skriv ett SEO-optimerat blogginlägg om lekplatssäkerhet för fastighetsägare och bostadsrättsföreningar. "
+    "Artikeln ska inledas direkt med innehållet, utan någon inledande text som: 'Visst, här är ett SEO-optimerat blogginlägg ...'. "
+    "Använd en tydlig struktur med underrubriker och inkludera eventuella relevanta länkar där det passar."
+)
 
 # Skapa payload för API-anropet
 payload = {
@@ -30,7 +34,7 @@ if response.status_code == 200:
     # Se till att mappen "blog" finns, annars skapa den
     os.makedirs("blog", exist_ok=True)
 
-    # Skapa en fil för inlägget i rätt katalog
+    # Skapa en fil för inlägget med dagens datum
     today = datetime.today().strftime('%Y-%m-%d')
     filename = f"blog/{today}-lekplatssäkerhet.md"
 
