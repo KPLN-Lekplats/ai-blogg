@@ -3,7 +3,7 @@ name: Generate Blog Post
 on:
   schedule:
     - cron: '0 0 1,15 * *'  # Kör den 1:a och 15:e varje månad
-  workflow_dispatch:  # Möjlighet att köra manuellt
+  workflow_dispatch:       # Möjlighet att köra manuellt
 
 jobs:
   generate-blog:
