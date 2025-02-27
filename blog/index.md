@@ -5,6 +5,7 @@ permalink: /blog/
 ---
 
 <h1>KPLN-blogg</h1>
+<p>Använd menyn för att välja ämnen att läsa om.</p>
 <ul>
   {% for post in site.blog | sort: 'date' | reverse %}
     <li>
