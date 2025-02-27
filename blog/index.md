@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: home
 title: "KPLN-blogg"
 permalink: /blog/
 ---
