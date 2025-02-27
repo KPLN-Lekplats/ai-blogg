@@ -7,5 +7,5 @@ title: "Välkommen till KPLN-bloggen!"
 <p>Bloggen om lekplats, sport och träning för utomhusmiljöer.</p>
 <p><a href="{{ site.baseurl }}/blog/">Läs våra blogginlägg</a></p>
 <footer>
-  <p>&copy; 2025 KPLN Design AB -Blogg</p>
+  <p>&copy; 2025 KPLN Design AB - Blogg</p>
 </footer>
