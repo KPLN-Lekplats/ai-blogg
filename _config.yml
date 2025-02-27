@@ -2,7 +2,7 @@ title: "KPLN-Blogg"
 description: "Bloggen om lekplats, sport och träning för utomhusmiljöer."
 baseurl: "/ai-blogg"  # OBS! Eftersom du publicerar som projekt-sida
 url: "https://KPLN-Lekplats.github.io"
-theme: minima
+theme: null
 
 collections:
   blog:
