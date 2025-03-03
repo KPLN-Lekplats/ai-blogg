@@ -21,7 +21,7 @@ Säkerheten är alltid högsta prioritet när det kommer till design och konstru
 
 *   **Räcken och Skydd:** Strategiskt placerade räcken kan ge extra stöd och säkerhet, särskilt för nybörjare. Dessa räcken bör vara robusta och tillverkade av material som tål påfrestningar. Även andra skyddsåtgärder, som kantförstärkningar och mjuka landningsytor, kan bidra till att minimera risken för skador.
 
-Hos [KPLN Skate](https://www.kpln.se/category/skate) hittar du allt du behöver för att utöva sporten säkert, från hjälmar och skydd till brädor av högsta kvalitet.
+Hos [KPLN Skate](https://www.kpln.se/category/skateparks) hittar du allt du behöver för att utöva sporten säkert, från hjälmar och skydd till brädor av högsta kvalitet.
 
 ### Design som Inspirerar: Estetik och Funktion i Harmoni
 
