@@ -13,7 +13,7 @@ Skateboarding har utvecklats från en subkultur till en global sport och livssti
 
 Säkerhet är fundamentalt i alla skateparker. En välplanerad skatepark minskar risken för skador och uppmuntrar till mer engagemang. Här är några nyckelområden att fokusera på:
 
-*   **Ytmaterial:** Ytan är den mest avgörande faktorn för säkerheten. Släta och jämna betongytor är idealiska eftersom de ger ett bra grepp och minskar risken för fall. Asfalt, även om det är ett billigare alternativ, är inte lika förlåtande och kan snabbt bli ojämn. För de yngsta eller mindre erfarna åkarna kan mjukare material runt specifika områden, som ramper och hopp, vara ett bra komplement. Undersök [KPLN Skate](https://www.kpln.se/category/skate) för att hitta rätt skyddsutrustning som hjälper dig att minimera risken för skador.
+*   **Ytmaterial:** Ytan är den mest avgörande faktorn för säkerheten. Släta och jämna betongytor är idealiska eftersom de ger ett bra grepp och minskar risken för fall. Asfalt, även om det är ett billigare alternativ, är inte lika förlåtande och kan snabbt bli ojämn. För de yngsta eller mindre erfarna åkarna kan mjukare material runt specifika områden, som ramper och hopp, vara ett bra komplement. Undersök [KPLN Skate](https://www.kpln.se/category/skateparks) för att hitta rätt skyddsutrustning som hjälper dig att minimera risken för skador.
 
 *   **Design och Layout:** Skateparkens design ska vara genomtänkt och ta hänsyn till flödet av åkare. Utrymme mellan hinder är viktigt för att undvika kollisioner. Separata områden för nybörjare och mer avancerade åkare är också en bra idé. Detta hindrar mindre erfarna åkare från att känna sig pressade att utföra trick de inte är redo för. En genomtänkt layout minskar också risken för "blind spots" där åkare inte kan se varandra.
 
@@ -57,8 +57,8 @@ Kommuner spelar en avgörande roll i skapandet av säkra och inkluderande skatep
 
 ### Skyddsutrustning: En Grundläggande Förutsättning för Säkerhet
 
-Oavsett hur väl designad och underhållen en skatepark är, är skyddsutrustning avgörande för att minimera risken för skador. Hjälm, knäskydd, armbågsskydd och handledsskydd är grundläggande för alla skateboardåkare, oavsett erfarenhetsnivå. Besök [KPLN Skate](https://www.kpln.se/category/skate) för att hitta ett brett utbud av högkvalitativ skyddsutrustning. Att investera i bra skydd är en investering i din hälsa och säkerhet.
+Oavsett hur väl designad och underhållen en skatepark är, är skyddsutrustning avgörande för att minimera risken för skador. Hjälm, knäskydd, armbågsskydd och handledsskydd är grundläggande för alla skateboardåkare, oavsett erfarenhetsnivå. Besök [KPLN Skate](https://www.kpln.se/category/skateparks) för att hitta ett brett utbud av högkvalitativ skyddsutrustning. Att investera i bra skydd är en investering i din hälsa och säkerhet.
 
 ### Sammanfattning
 
-Säkerhet och design är de två hörnstenarna i en framgångsrik skatepark. Genom att prioritera dessa aspekter kan vi skapa utrymmen som inte bara är säkra och funktionella, utan också inspirerande och engagerande för skateboardåkare av alla nivåer. Genom att samarbeta kan kommuner, designers, byggare och skateboardåkare skapa skateparker som berikar samhället och främjar en aktiv och hälsosam livsstil. Glöm inte att rätt utrustning, som du hittar hos [KPLN Skate](https://www.kpln.se/category/skate), är en viktig del av din säkerhet i parken.
+Säkerhet och design är de två hörnstenarna i en framgångsrik skatepark. Genom att prioritera dessa aspekter kan vi skapa utrymmen som inte bara är säkra och funktionella, utan också inspirerande och engagerande för skateboardåkare av alla nivåer. Genom att samarbeta kan kommuner, designers, byggare och skateboardåkare skapa skateparker som berikar samhället och främjar en aktiv och hälsosam livsstil. Glöm inte att rätt utrustning, som du hittar hos [KPLN Skate](https://www.kpln.se/category/skateparks), är en viktig del av din säkerhet i parken.
