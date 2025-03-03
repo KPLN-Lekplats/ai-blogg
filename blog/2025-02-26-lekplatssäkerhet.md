@@ -1,7 +1,5 @@
 # Lekplatssäkerhet för fastighetsägare och bostadsrättsföreningar
 
-Visst, här är ett SEO-optimerat blogginlägg om lekplatssäkerhet för fastighetsägare och bostadsrättsföreningar:
-
 **Lekplatssäkerhet: En guide för fastighetsägare och bostadsrättsföreningar**
 
 Lekplatser är en viktig del av alla gemenskaper. De är en plats för barn att träna, socialisera och ha roligt. De ger också föräldrar och vårdgivare en plats att koppla av och njuta av naturen.
