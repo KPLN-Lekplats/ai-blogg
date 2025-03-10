@@ -19,7 +19,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: pip install openai pyyaml
+        run: pip install openai pyyaml requests
 
       - name: Run script to generate blog post
         env:
