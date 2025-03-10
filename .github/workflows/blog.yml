@@ -24,7 +24,7 @@ jobs:
       - name: Run script to generate blog post
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python generate_post.py
+        run: python generate_blog.py
 
       - name: Commit and Push Changes
         run: |
